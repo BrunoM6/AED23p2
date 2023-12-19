@@ -32,7 +32,7 @@ public:
     void setlatitude(double latitude);
     double getlongitude() const;
     void setlongitude(double longitude);
-
+    bool operator==(const Airport ) const;
 };
 
 #endif //PROJETO2_AIRPORT_H

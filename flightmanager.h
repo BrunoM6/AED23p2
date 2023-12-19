@@ -1,27 +1,31 @@
 //
-// Created by brunow on 18-12-2023.
+// Created by brunow on 19-12-2023.
 //
 /**
  * @class FlightManager
  * @brief Represents a flight manager object.
  *
- * The FlightManager class deals with the parsing of the files from the dataset and the creation of the graphs needed.
+ * The flight manager class deals with the manipulation of the graphs created by the parser.
  */
 #ifndef PROJETO2_FLIGHTMANAGER_H
 #define PROJETO2_FLIGHTMANAGER_H
 
-#include "airport.h"
-#include "airline.h"
-#include "graph.h"
-
-class FlightManager {
+#include "parser.h"
+#include "unordered_set"
+class flightmanager {
 private:
-    Graph<Airport> airports;
-    Graph<Airline> airlines;
-    vector<Flights> flights;
+    parser parser;
 public:
-    void parseAirports();
-    void parseAirlines();
-    void parseFlights();
+    int number_of_airports();
+    int number_of_airlines();
+    int number_of_flights_available();
+    int number_of_flights_out(Airport airport);
+    int number_of_flights_out(Airport airport, int jumps);
+    int number_of_flights_in(Airport airport);
+    int number_of_flights_airline(Airline airline);
+    int number_of_countries(Airport airport);
+    int number_of_cities(Airport airport);
+    int ranking_airport(int rank);
+    int essential_airports();
 };
 #endif //PROJETO2_FLIGHTMANAGER_H

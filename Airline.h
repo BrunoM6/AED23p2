@@ -29,6 +29,7 @@ public:
     void setcallsign(string callsign);
     string getCountry() const;
     setCountry(string country);
+    bool operator==(const Airline ) const;
 };
 
 #endif //PROJETO2_AIRLINE_H
