@@ -2,7 +2,7 @@
 // Created by brunow on 18-12-2023.
 //
 #include <string>
-using namespace std;]
+using namespace std;
 /**
  * @class Airline
  * @brief Represents an airline object.
@@ -21,15 +21,16 @@ private:
 
 public:
     Airline(string code, string name, string callsign, string country);
-    string getcode() const;
-    void setcode(string code);
-    string getname() const;
-    void setname(string name);
-    string getcallsign() const;
-    void setcallsign(string callsign);
+    string getCode() const;
+    void setCode(string code);
+    string getName() const;
+    void setName(string name);
+    string getCallsign() const;
+    void setCallsign(string callsign);
     string getCountry() const;
-    setCountry(string country);
-    bool operator==(const Airline ) const;
+    void setCountry(string country);
+    bool operator<(const Airline airline) const;
+    bool operator==(const Airline airline) const;
 };
 
 #endif //PROJETO2_AIRLINE_H

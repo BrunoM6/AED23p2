@@ -22,17 +22,21 @@ private:
     double longitude;
 public:
     Airport(string code, string name, string city, string country, double latitude, double longitude);
-    string getcode() const;
-    void setcode(string code);
-    string getname() const;
-    void setname(string name);
-    string getcountry() const;
-    void setcountry(string country);
-    double getlatitude() const;
-    void setlatitude(double latitude);
-    double getlongitude() const;
-    void setlongitude(double longitude);
-    bool operator==(const Airport ) const;
+    Airport(string code);
+    string getCode() const;
+    void setCode(string code);
+    string getName() const;
+    void setName(string name);
+    string getCity() const;
+    void setCity(string city);
+    string getCountry() const;
+    void setCountry(string country);
+    double getLatitude() const;
+    void setLatitude(double latitude);
+    double getLongitude() const;
+    void setLongitude(double longitude);
+    bool operator<(const Airport airport) const;
+    bool operator==(const Airport airport) const;
 };
 
 #endif //PROJETO2_AIRPORT_H

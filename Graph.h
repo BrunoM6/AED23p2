@@ -1,20 +1,15 @@
 //
-// Created by brunow on 18-12-2023.
+// Created by joao on 26-12-2023.
 //
 
-#ifndef PROJETO2_GRAPH_H
-#define PROJETO2_GRAPH_H
-/*
- * Graph.h
- */
-#ifndef GRAPH_H_
-#define GRAPH_H_
-
+#ifndef AED23P2_GRAPH_H
+#define AED23P2_GRAPH_H
 #include <cstddef>
 #include <vector>
 #include <queue>
 #include <stack>
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -35,7 +30,7 @@ class Vertex {
     int num;               // auxiliary field
     int low;               // auxiliary field
 
-    void addEdge(Vertex<T> *dest, string w);
+    void addEdge(Vertex<T> *dest, double w);
     bool removeEdgeTo(Vertex<T> *d);
 public:
     Vertex(T in);
@@ -61,6 +56,8 @@ public:
     void setLow(int low);
 
     friend class Graph<T>;
+
+    void addEdge(Vertex<T> *d, string w);
 };
 
 template <class T>
@@ -91,13 +88,16 @@ public:
     int getNumVertex() const;
     bool addVertex(const T &in);
     bool removeVertex(const T &in);
-    bool addEdge(const T &sourc, const T &dest, string w);
+    bool addEdge(const T &sourc, const T &dest, double w);
     bool removeEdge(const T &sourc, const T &dest);
     vector<Vertex<T> * > getVertexSet() const;
     vector<T> dfs() const;
     vector<T> dfs(const T & source) const;
     vector<T> bfs(const T &source) const;
     vector<T> topsort() const;
+    bool isDAG() const;
+
+    bool addEdge(const T &sourc, const T &dest, string w);
 };
 
 /****************** Provided constructors and functions ********************/
@@ -240,6 +240,15 @@ bool Graph<T>::addVertex(const T &in) {
  * Returns true if successful, and false if the source or destination vertex does not exist.
  */
 template <class T>
+bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
+    auto v1 = findVertex(sourc);
+    auto v2 = findVertex(dest);
+    if (v1 == NULL || v2 == NULL)
+        return false;
+    v1->addEdge(v2,w);
+    return true;
+}
+template <class T>
 bool Graph<T>::addEdge(const T &sourc, const T &dest, string w) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
@@ -253,6 +262,10 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, string w) {
  * Auxiliary function to add an outgoing edge to a vertex (this),
  * with a given destination vertex (d) and edge weight (w).
  */
+template <class T>
+void Vertex<T>::addEdge(Vertex<T> *d, double w) {
+    adj.push_back(Edge<T>(d, w));
+}
 template <class T>
 void Vertex<T>::addEdge(Vertex<T> *d, string w) {
     adj.push_back(Edge<T>(d, w));
@@ -353,7 +366,6 @@ vector<T> Graph<T>::dfs(const T & source) const {
     auto s = findVertex(source);
     if (s == nullptr)
         return res;
-
     for (auto v : vertexSet)
         v->visited = false;
 
@@ -394,4 +406,88 @@ vector<T> Graph<T>::bfs(const T & source) const {
     return res;
 }
 
-#endif //PROJETO2_GRAPH_H
+
+/****************** isDAG  ********************/
+/*
+ * Performs a depth-first search in a graph (this), to determine if the graph
+ * is acyclic (acyclic directed graph or DAG).
+ * During the search, a cycle is found if an edge connects to a vertex
+ * that is being processed in the stack of recursive calls (see theoretical classes).
+ * Returns true if the graph is acyclic, and false otherwise.
+ */
+
+template <class T>
+bool Graph<T>::isDAG() const {
+    for (auto v : vertexSet) {
+        v->visited = false;
+        v->processing = false;
+    }
+    for (auto v : vertexSet)
+        if (! v->visited)
+            if ( ! dfsIsDAG(v) )
+                return false;
+    return true;
+}
+
+/**
+ * Auxiliary function that visits a vertex (v) and its adjacent, recursively.
+ * Returns false (not acyclic) if an edge to a vertex in the stack is found.
+ */
+template <class T>
+bool Graph<T>::dfsIsDAG(Vertex<T> *v) const {
+    v->visited = true;
+    v->processing = true;
+    for (auto & e : v->adj) {
+        auto w = e.dest;
+        if (w->processing)
+            return false;
+        if (! w->visited)
+            if (! dfsIsDAG(w))
+                return false;
+    }
+    v->processing = false;
+    return true;
+}
+
+
+/****************** toposort ********************/
+//=============================================================================
+// Exercise 1: Topological Sorting
+//=============================================================================
+// TODO
+/*
+ * Performs a topological sorting of the vertices of a graph (this).
+ * Returns a vector with the contents of the vertices by topological order.
+ * If the graph has cycles, returns an empty vector.
+ * Follows the algorithm described in theoretical classes.
+ */
+
+template<class T>
+vector<T> Graph<T>::topsort() const {
+    vector<T> res;
+    for(auto& v : vertexSet){
+        v->setIndegree(0);
+    }
+    for(auto& v : vertexSet){
+        for(auto& e : v->adj){
+            e.dest->indegree++;
+        }
+    }
+    queue<Vertex<T>*> q;
+    for(auto& v:vertexSet){
+        if(v->indegree == 0)q.push(v);
+    }
+    while(!q.empty()){
+        auto v = q.front();
+        res.push_back(v->info);
+        q.pop();
+        for (auto& e : v->getAdj()){
+            e.dest->indegree--;
+            if(e.dest->indegree == 0){
+                q.push(e.dest);
+            }
+        }
+    }
+    return res;
+}
+#endif //AED23P2_GRAPH_H
