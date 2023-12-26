@@ -2,7 +2,7 @@
 // Created by brunow on 18-12-2023.
 //
 #include "Airport.h"
-
+Airport::Airport(): code(""), name(""), city(""), country(""), latitude(0), longitude(0) {}
 Airport::Airport(string code, string name, string city, string country, double latitude, double longitude)
         : code(code), name(name), city(city), country(country), latitude(latitude), longitude(longitude) {}
 Airport::Airport(string code): code(code) {}

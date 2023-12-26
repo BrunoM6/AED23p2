@@ -26,12 +26,49 @@ void Menu::print_consultMenu() {
     cout << "| 9- Identify the airports that are essential to the network’s circulation capability  |"<<'\n';
     cout << "| 0- Quit                                                                              |"<<'\n';
     cout << "----------------------------------------------------------------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+
 }
 void Menu::print_globalNumberMenu() {
     cout << "----------Global Number----------"<<'\n';
     cout << "| 1- Airport                    |"<<'\n';
     cout << "| 2- Airlines                   |"<<'\n';
-    cout << "| 3-Flights                     |"<<'\n';
-    cout << "| 4-Quit                        |"<<'\n';
+    cout << "| 3- Flights                    |"<<'\n';
+    cout << "| 4- Quit                       |"<<'\n';
     cout << "---------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+}
+void Menu::print_flightscityMenu(){
+    cout << "----------Number of flights----------"<<'\n';
+    cout << "| 1- Airline                        |"<<'\n';
+    cout << "| 2- City                           |"<<'\n';
+    cout << "| 3- Quit                           |"<<'\n';
+    cout << "-------------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+}
+void Menu::print_flytoMenu() {
+    cout << "----------Number of countries----------"<<'\n';
+    cout << "| 1- Airport                          |"<<'\n';
+    cout << "| 2- City                             |"<<'\n';
+    cout << "| 3- Quit                             |"<<'\n';
+    cout << "---------------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+}
+void Menu::print_numberDestinationsMenu() {
+    cout << "----------Number of Destinations-----------"<<'\n';
+    cout << "| 1- Airport                              |"<<'\n';
+    cout << "| 2- City                                 |"<<'\n';
+    cout << "| 3- Country                              |"<<'\n';
+    cout << "| 4- Quit                                 |"<<'\n';
+    cout << "-------------------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+}
+void Menu::print_numberDestinationsXMenu() {
+    cout << "----------Number of Destinations with x stops-----------"<<'\n';
+    cout << "| 1- Airport                                           |"<<'\n';
+    cout << "| 2- City                                              |"<<'\n';
+    cout << "| 3- Country                                           |"<<'\n';
+    cout << "| 4- Quit                                              |"<<'\n';
+    cout << "--------------------------------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
 }

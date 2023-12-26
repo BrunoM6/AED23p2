@@ -27,13 +27,13 @@ int main(){
                             cin >> j;
                             switch (j) {
                                 case '1':
-                                    cout << flightManager.number_of_airports()<<'\n';
+                                    flightManager.number_of_airports();
                                     break;
                                 case '2':
-                                    cout << flightManager.number_of_airlines()<<'\n';
+                                    flightManager.number_of_airlines();
                                     break;
                                 case '3':
-                                    cout << flightManager.number_of_flights_available()<<'\n';
+                                    flightManager.number_of_flights_available();
                                     break;
                                 case '4':
                                     break;
@@ -44,18 +44,94 @@ int main(){
                             }
                             break;
                         case '2':
+                            flightManager.number_of_flights_out();
                             break;
                         case '3':
+                            menu.print_flightscityMenu();
+                            char p;
+                            cin >> p;
+                            switch (p) {
+                                case '1':
+                                    flightManager.number_of_flights_airline();
+                                    break;
+                                case '2':
+                                    flightManager.number_of_flights_cities();
+                                    break;
+                                case '3':
+                                    break;
+                                default:
+                                    cout <<"Invalid Input!\n";
+                                    break;
+
+                            }
                             break;
                         case'4':
+                            menu.print_flytoMenu();
+                            char o;
+                            cin >> o;
+                            switch (o) {
+                                case '1':
+                                    flightManager.number_of_countries_airport();
+                                    break;
+                                case '2':
+                                    flightManager.number_of_countries_city();
+                                    break;
+                                case '3':
+                                    break;
+                                default:
+                                    cout <<"Invalid Input!\n";
+                                    break;
+
+                            }
                             break;
                         case '5':
+                            menu.print_numberDestinationsMenu();
+                            char l;
+                            cin >> l;
+                            switch (l) {
+                                case '1':
+                                    flightManager.number_of_destinations_airport();
+                                    break;
+                                case '2':
+                                    flightManager.number_of_destinations_cities();
+                                    break;
+                                case '3':
+                                    flightManager.number_of_destinations_countries();
+                                    break;
+                                case '4':
+                                    break;
+                                default:
+                                    cout <<"Invalid Input!\n";
+                                    break;
+
+                            }
                             break;
                         case '6':
+                            menu.print_numberDestinationsXMenu();
+                            char e;
+                            cin >> e;
+                            switch (e) {
+                                case '1':
+                                    flightManager.number_of_destinations_airport_x();
+                                    break;
+                                case '2':
+                                    flightManager.number_of_destinations_cities_x();
+                                    break;
+                                case '3':
+                                    flightManager.number_of_destinations_countries_x();
+                                    break;
+                                case '4':
+                                    break;
+                                default:
+                                    cout <<"Invalid Input!\n";
+                                    break;
+
+                            }
                             break;
                         case '7':
                             break;
                         case '8':
+                            flightManager.greatest_traffic_capacity();
                             break;
                         case '9':
                             break;

@@ -12,6 +12,10 @@ class Menu {
     void print_mainMenu();
     void print_consultMenu();
     void print_globalNumberMenu();
+    void print_flightscityMenu();
+    void print_flytoMenu();
+    void print_numberDestinationsMenu();
+    void print_numberDestinationsXMenu();
 };
 
 
