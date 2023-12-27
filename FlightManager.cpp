@@ -186,7 +186,9 @@ void FlightManager::dfscountries(Vertex<Airport> *v, set<std::string> &res, bool
         auto des = e.getDest();
         if(!des->isVisited())dfscountries(des,res,false);
     }
+    v->setVisited(false);
 }
+
 void FlightManager::number_of_destinations_airport_x() {
     string airport;
     cout << "Code of airport: ";
@@ -493,3 +495,31 @@ void FlightManager::best_flight_option_input() {
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
 
 }
+
+void FlightManager::countEssentialAirports() {
+    int essentialCount = 0;
+
+    for (const auto &airport : airports) {
+        set<string> visitedCountries;
+        Vertex<Airport> *v = flights.findVertex(airport);
+
+        if (v != nullptr && !v->isVisited()) {
+            dfscountries(v, visitedCountries, true);
+
+            for (const auto &otherAirport : airports) {
+                if (!(otherAirport.getCountry() == airport.getCountry() && otherAirport.getName() == airport.getName())) {
+                    auto otherVertex = flights.findVertex(otherAirport);
+                    if (otherVertex != nullptr && visitedCountries.find(otherAirport.getCountry()) == visitedCountries.end()) {
+                        essentialCount++;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << essentialCount;
+}
+
+
+

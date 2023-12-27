@@ -46,5 +46,8 @@ public:
     void best_flight_option_input();
     void best_flight_option(list<string> src, list<string> dest);
 
+    void identifyEssentialAirports();
+
+    void countEssentialAirports();
 };
 #endif //PROJETO2_FLIGHTMANAGER_H
