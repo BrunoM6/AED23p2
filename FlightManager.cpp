@@ -583,5 +583,78 @@ void FlightManager::best_flight_option(list<std::string> src, list<std::string> 
             }
         }
     }
+}
 
+
+
+
+void FlightManager::bestFlightOptionWithFilters(const string& srcCode, const string& destCode, const set<string>& preferredAirlines) {
+    auto srcAirportItr = airports.find(Airport(srcCode));
+    auto destAirportItr = airports.find(Airport(destCode));
+
+    if (srcAirportItr == airports.end() || destAirportItr == airports.end()) {
+        cout << "Invalid input! Please check the airport codes.\n";
+        return;
+    }
+
+    auto srcVertex = flights.findVertex(*srcAirportItr);
+    auto destVertex = flights.findVertex(*destAirportItr);
+
+    if (!srcVertex || !destVertex) {
+        cout << "Invalid input! Unable to find flight information.\n";
+        return;
+    }
+
+    vector<vector<string>> paths;
+    vector<string> path;
+    dfsBestFlightWithFilters(srcVertex, destVertex, path, paths, 0, preferredAirlines);
+
+    displayBestFlightPaths(paths);
+}
+
+void FlightManager::dfsBestFlightWithFilters(Vertex<Airport>* src, Vertex<Airport>* dest, vector<string>& path, vector<vector<string>>& paths, int k, const set<string>& preferredAirlines) {
+    src->setVisited(true);
+
+    string airportInfo = src->getInfo().getName() + " , " + src->getInfo().getCity();
+    path.push_back(airportInfo);
+
+    if (src == dest) {
+        paths.push_back(path);
+    }
+
+    for (auto edge : src->getAdj()) {
+        auto neighbor = edge.getDest();
+
+        if (preferredAirlines.empty() || preferredAirlines.count(edge.getWeight())) {
+            if (!neighbor->isVisited()) {
+                dfsBestFlightWithFilters(neighbor, dest, path, paths, k + 1, preferredAirlines);
+            }
+        }
+    }
+    src->setVisited(false);
+    path.pop_back();
+}
+
+void FlightManager::displayBestFlightPaths(const vector<vector<string>>& paths) {
+    int minLength = 0;
+    bool firstTime = true;
+
+    for (const auto& path : paths) {
+        if (firstTime) {
+            firstTime = false;
+            minLength = path.size();
+        } else if (path.size() < minLength) {
+            minLength = path.size();
+        }
+    }
+
+    for (const auto& path : paths) {
+        if (path.size() == minLength) {
+            cout << "Path: \n";
+            for (const auto& city : path) {
+                cout << city << '\n';
+            }
+            cout << "------------------------------\n";
+        }
+    }
 }

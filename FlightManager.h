@@ -48,6 +48,9 @@ public:
     void essential_airports();
     void best_flight_option_input();
     void best_flight_option(list<string> src, list<string> dest);
-
+    void displayBestFlightPaths(const vector<vector<string>> &paths);
+    void bestFlightOptionWithFilters(const string &srcCode, const string &destCode, const set<string> &preferredAirlines);
+    void dfsBestFlightWithFilters(Vertex<Airport> *src, Vertex<Airport> *dest, vector<string> &path,
+                                  vector<vector<string>> &paths, int k, const set<string> &preferredAirlines);
 };
 #endif //PROJETO2_FLIGHTMANAGER_H
