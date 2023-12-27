@@ -186,7 +186,6 @@ void FlightManager::dfscountries(Vertex<Airport> *v, set<std::string> &res, bool
         auto des = e.getDest();
         if(!des->isVisited())dfscountries(des,res,false);
     }
-    v->setVisited(false);
 }
 
 void FlightManager::number_of_destinations_airport_x() {
