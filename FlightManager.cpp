@@ -65,7 +65,7 @@ void FlightManager::number_of_flights_airline() {
 void FlightManager::number_of_flights_cities() {
     string city;
     cout << "Name of the city: ";
-    cin >> city;
+    getline(cin>>ws,city);
     int res = 0;
     bool found = false;
     for(auto v : flights.getVertexSet()){
@@ -101,7 +101,7 @@ void FlightManager::number_of_countries_airport() {
 void FlightManager::number_of_countries_city() {
     string city;
     cout << "Name of the city: ";
-    cin >> city;
+    getline(cin>>ws,city);
     set<string> diffcountries;
     bool found = false;
     for(auto v: flights.getVertexSet() ){
@@ -379,79 +379,115 @@ void FlightManager::best_flight_option_input() {
         cout << "| 2- Name           |"<<'\n';
         cout << "---------------------"<<'\n';
         cout << "Choose the option you want to do: ";
-        if(i == '1'){
+        char k;
+        cin >> k;
+        if(k == '1'){
             string  code;
-            cin >> code;
+            cout << "Airport Code: ";
+            getline(cin>>ws,code);
+            auto itr = airports.find(Airport(code));
+            if(itr == airports.end()){
+                cout <<"Invalid Input!\n";
+                return;
+            }
             src.push_back(code);
-            if(src.size()==0)cout <<"Invalid Input!\n";
         }
-        if(i == '2'){
+        if(k == '2'){
             string name;
-            cin >> name;
+            cout << "Airport Name: ";
+            getline(cin>>ws,name);
             for(auto airport: airports){
                 if(airport.getName() == name){
                     src.push_back(airport.getCode());
                     break;
                 }
             }
-            if(src.size()==0)cout <<"Invalid Input!\n";
+            if(src.size()==0){
+                cout <<"Invalid Input!\n";
+                return;
+            }
         }
-    };
-    if(i == '2'){
+    }
+    else if(i == '2'){
         cout << "City name: ";
         string city;
-        cin >> city;
+        getline(cin>>ws,city);
         for(auto airport: airports){
             if(airport.getCity() == city){
                 src.push_back(airport.getCode());
             }
         }
-        if(src.size()==0)cout <<"Invalid Input!\n";
+        if(src.size()==0){
+            cout <<"Invalid Input!\n";
+            return;
+        }
     }
-    if(i == '3');
-    if(i == '4')return;
-    else cout <<"Invalid Input!\n";
+    else if(i == '3');
+    else if(i == '4')return;
+    else {
+        cout <<"Invalid Input!\n";
+        return;
+    }
     menu.print_ask_for_flight_option();
     cout << "Choose the option you want to do: ";
+    char l;
+    cin >> l;
     cout << "             Choose the destination!\n";
-    if(i == '1'){
+    if(l == '1'){
         cout << "---------------------"<<'\n';
         cout << "| 1- Code           |"<<'\n';
         cout << "| 2- Name           |"<<'\n';
         cout << "---------------------"<<'\n';
         cout << "Choose the option you want to do: ";
-        if(i == '1'){
+        char k;
+        cin >> k;
+        if(k == '1'){
             string  code;
-            cin >> code;
+            cout << "Airport Code: ";
+            getline(cin>>ws,code);
+            auto itr = airports.find(Airport(code));
+            if(itr == airports.end()){
+                cout <<"Invalid Input!\n";
+                return;
+            }
             dest.push_back(code);
-            if(dest.size()==0)cout <<"Invalid Input!\n";
         }
-        if(i == '2'){
+        if(k == '2'){
             string name;
-            cin >> name;
+            cout << "Airport Name: ";
+            getline(cin>>ws,name);
             for(auto airport: airports){
                 if(airport.getName() == name){
                     dest.push_back(airport.getCode());
                     break;
                 }
             }
-            if(dest.size()==0)cout <<"Invalid Input!\n";
+            if(dest.size()==0) {
+                cout << "Invalid Input!\n";
+                return;
+            }
         }
-    };
-    if(i == '2'){
+    }
+    else if(l == '2'){
         cout << "City name: ";
         string city;
-        cin >> city;
+        getline(cin>>ws,city);
         for(auto airport: airports){
             if(airport.getCity() == city){
                 dest.push_back(airport.getCode());
             }
         }
-        if(dest.size()==0)cout <<"Invalid Input!\n";
+        if(dest.size()==0){
+            cout <<"Invalid Input!\n";
+            return;
+        }
     }
-    if(i == '3');
-    if(i == '4')return;
-    else cout <<"Invalid Input!\n";
+    else if(l == '3');
+    else if(l == '4')return;
+    else {
+        cout <<"Invalid Input!\n";
+        return;
+    }
     best_flight_option(src,dest);
 }
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
