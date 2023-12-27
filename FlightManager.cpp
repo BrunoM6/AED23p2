@@ -2,6 +2,8 @@
 // Created by brunow on 19-12-2023.
 //
 #include "FlightManager.h"
+#include "Menu.h"
+
 FlightManager::FlightManager() {
     Parser parser1;
     parser = parser1;
@@ -11,11 +13,6 @@ FlightManager::FlightManager() {
 }
 void FlightManager::number_of_airports() {
     cout << "Number of airports: "<< airports.size()<<'\n';
-    set<string> res;
-    for(auto airport : airports){
-        res.insert(airport.getCountry());
-    }
-    cout << res.size() << '\n';
 }
 
 void FlightManager::number_of_airlines() {
@@ -27,7 +24,7 @@ void FlightManager::number_of_flights_available() {
     for(auto airport : flights.getVertexSet()) {
         res += airport->getAdj().size();
     }
-    cout << "Number of flights available" << res<<'\n';
+    cout << "Number of flights available: " << res<<'\n';
 }
 void FlightManager::number_of_flights_out() {
     string airport;
@@ -212,7 +209,7 @@ void FlightManager::number_of_destinations_airport_x() {
         auto vertexpair = q.front();
         q.pop();
         if(vertexpair.second> k)break;
-        diffairports.insert(vertexpair.first->getInfo());
+        if(vertexpair.second>0)diffairports.insert(vertexpair.first->getInfo());
         for(auto e : vertexpair.first->getAdj()){
             auto dest = e.getDest();
             if(!dest->isVisited()){
@@ -256,13 +253,47 @@ void FlightManager::number_of_destinations_cities_x() {
     }
     cout << "The airport " << airport << " can reach " <<diffcitties.size()<< " citties with " << k << " stops!\n";
 }
+
+void FlightManager::number_of_destinations_countries_x() {
+    string airport;
+    cout << "Code of airport: ";
+    cin >>airport;
+    int k;
+    cout << "Number of stops: ";
+    cin >> k;
+    auto airp = airports.find(Airport(airport));
+    if(airp == airports.end()){
+        cout << "Invalid Input!\n";
+        return;
+    }
+    auto v = flights.findVertex(*airp);
+    set<string> diffcountries;
+    for(auto vertex : flights.getVertexSet())vertex->setVisited(false);
+    queue<pair<Vertex<Airport>*,int>> q;
+    q.push({v,0});
+    v->setVisited(true);
+    while(!q.empty()){
+        auto vertexpair = q.front();
+        q.pop();
+        if(vertexpair.second> k)break;
+        if(vertexpair.second>0)diffcountries.insert(vertexpair.first->getInfo().getCountry());
+        for(auto e : vertexpair.first->getAdj()){
+            auto dest = e.getDest();
+            if(!dest->isVisited()){
+                q.push({dest,vertexpair.second+1});
+                dest->setVisited(true);
+            }
+        }
+    }
+    cout << "The airport " << airport << " can reach " <<diffcountries.size()<< " countries with " << k << " stops!\n";
+}
 void FlightManager::maximum_trip() {
     int max = 0;
     vector<pair<string,string>> res;
     string src;
     string dest;
     for(auto v : flights.getVertexSet()){
-       for(auto v1 : flights.getVertexSet())v1->setVisited(false);
+        for(auto v1 : flights.getVertexSet())v1->setVisited(false);
         queue<pair<Vertex<Airport>*,int>> q;
         q.push({v,0});
         v->setVisited(true);
@@ -272,7 +303,7 @@ void FlightManager::maximum_trip() {
             if(vertexpair.second > max){
                 max = vertexpair.second;
             }
-                for(auto e : vertexpair.first->getAdj()){
+            for(auto e : vertexpair.first->getAdj()){
                 auto w = e.getDest();
                 if(!w->isVisited()){
                     q.push({w,vertexpair.second+1});
@@ -308,39 +339,6 @@ void FlightManager::maximum_trip() {
     }
     cout << "Max distance: "<< max<<'\n';
 }
-void FlightManager::number_of_destinations_countries_x() {
-    string airport;
-    cout << "Code of airport: ";
-    cin >>airport;
-    int k;
-    cout << "Number of stops: ";
-    cin >> k;
-    auto airp = airports.find(Airport(airport));
-    if(airp == airports.end()){
-        cout << "Invalid Input!\n";
-        return;
-    }
-    auto v = flights.findVertex(*airp);
-    set<string> diffcountries;
-    for(auto vertex : flights.getVertexSet())vertex->setVisited(false);
-    queue<pair<Vertex<Airport>*,int>> q;
-    q.push({v,0});
-    v->setVisited(true);
-    while(!q.empty()){
-        auto vertexpair = q.front();
-        q.pop();
-        if(vertexpair.second> k)break;
-        if(vertexpair.second>0)diffcountries.insert(vertexpair.first->getInfo().getCountry());
-        for(auto e : vertexpair.first->getAdj()){
-            auto dest = e.getDest();
-            if(!dest->isVisited()){
-                q.push({dest,vertexpair.second+1});
-                dest->setVisited(true);
-            }
-        }
-    }
-    cout << "The airport " << airport << " can reach " <<diffcountries.size()<< " countries with " << k << " stops!\n";
-}
 void FlightManager::greatest_traffic_capacity() {
     for(auto v : flights.getVertexSet()){
         v->setIndegree(0);
@@ -365,4 +363,51 @@ void FlightManager::greatest_traffic_capacity() {
     cout << "Country: " <<airport.getCountry()<<'\n';
     cout << "Latitude: " <<airport.getLatitude()<<'\n';
     cout << "Longitude: " << airport.getLongitude() <<'\n';
+}
+void FlightManager::best_flight_option_input() {
+    Menu menu;
+    menu.print_ask_for_flight_option();
+    cout << "Choose the option you want to do: ";
+    string src;
+    string dest;
+    char i;
+    cin >> i;
+    cout << "             Choose the source!";
+    if(i == '1'){
+        cout << "---------------------"<<'\n';
+        cout << "| 1- Code           |"<<'\n';
+        cout << "| 2- Name           |"<<'\n';
+        cout << "---------------------"<<'\n';
+        cout << "Choose the option you want to do: ";
+        if(i == '1'){
+            string  code;
+            cin >> code;
+            src = code;
+        }
+        if(i == '2'){
+            string name;
+            cin >> name;
+            for(auto airport: airports){
+                if(airport.getName() == name){
+                    src = airport.getCode();
+                    break;
+                }
+            }
+        }
+    };
+    if(i == '2'){
+        cout << "City name: ";
+        string city;
+        cin >> city;
+        for(auto airport: airports){
+            if(airport.getCity() == city){
+                src = airport.getCode();
+                break;
+            }
+        }
+    }
+    if(i == '3');
+    if(i == '4')return;
+    else cout <<"Invalid Input!\n";
+
 }

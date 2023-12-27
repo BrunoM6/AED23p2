@@ -72,3 +72,11 @@ void Menu::print_numberDestinationsXMenu() {
     cout << "--------------------------------------------------------"<<'\n';
     cout << "Choose the option you want to do: ";
 }
+void Menu::print_ask_for_flight_option() {
+    cout << "----------Best Flight Option-----------"<<'\n';
+    cout << "| 1- Airport(code/name)               |"<<'\n';
+    cout << "| 2- City                             |"<<'\n';
+    cout << "| 3- Coordinates                      |"<<'\n';
+    cout << "| 4- Quit                             |"<<'\n';
+    cout << "---------------------------------------"<<'\n';
+}

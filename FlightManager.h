@@ -42,6 +42,9 @@ public:
     void number_of_destinations_countries_x();
     void maximum_trip();
     void greatest_traffic_capacity();
+    void essential_airports();
+    void best_flight_option_input();
+    void best_flight_option(string src, string dest);
 
 };
 #endif //PROJETO2_FLIGHTMANAGER_H

@@ -144,7 +144,7 @@ int main(){
                 }
                 break;
             case '2':
-                cout << "Best Flight Option \n";
+                flightManager.best_flight_option_input();
                 break;
             case '3':
                 cout << "Filtred flight Option \n";
