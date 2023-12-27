@@ -129,6 +129,7 @@ int main(){
                             }
                             break;
                         case '7':
+                            flightManager.maximum_trip();
                             break;
                         case '8':
                             flightManager.greatest_traffic_capacity();

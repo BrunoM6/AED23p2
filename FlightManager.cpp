@@ -256,6 +256,58 @@ void FlightManager::number_of_destinations_cities_x() {
     }
     cout << "The airport " << airport << " can reach " <<diffcitties.size()<< " citties with " << k << " stops!\n";
 }
+void FlightManager::maximum_trip() {
+    int max = 0;
+    vector<pair<string,string>> res;
+    string src;
+    string dest;
+    for(auto v : flights.getVertexSet()){
+       for(auto v1 : flights.getVertexSet())v1->setVisited(false);
+        queue<pair<Vertex<Airport>*,int>> q;
+        q.push({v,0});
+        v->setVisited(true);
+        while (!q.empty()){
+            auto vertexpair = q.front();
+            q.pop();
+            if(vertexpair.second > max){
+                max = vertexpair.second;
+            }
+                for(auto e : vertexpair.first->getAdj()){
+                auto w = e.getDest();
+                if(!w->isVisited()){
+                    q.push({w,vertexpair.second+1});
+                    w->setVisited(true);
+                }
+            }
+        }
+    }
+    for(auto v : flights.getVertexSet()){
+        for(auto v1 : flights.getVertexSet())v1->setVisited(false);
+        queue<pair<Vertex<Airport>*,int>> q;
+        q.push({v,0});
+        v->setVisited(true);
+        src = v->getInfo().getCode();
+        while (!q.empty()){
+            auto vertexpair = q.front();
+            q.pop();
+            if(vertexpair.second == max){
+                dest = vertexpair.first->getInfo().getCode();
+                res.push_back({src,dest});
+            }
+            for(auto e : vertexpair.first->getAdj()){
+                auto w = e.getDest();
+                if(!w->isVisited()){
+                    q.push({w,vertexpair.second+1});
+                    w->setVisited(true);
+                }
+            }
+        }
+    }
+    for(auto p : res){
+        cout << "From " << p.first << " to " << p.second << "\n";
+    }
+    cout << "Max distance: "<< max<<'\n';
+}
 void FlightManager::number_of_destinations_countries_x() {
     string airport;
     cout << "Code of airport: ";
