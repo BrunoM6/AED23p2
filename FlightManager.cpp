@@ -3,6 +3,7 @@
 //
 #include "FlightManager.h"
 #include "Menu.h"
+#include <unordered_set>
 
 FlightManager::FlightManager() {
     Parser parser1;
@@ -493,3 +494,34 @@ void FlightManager::best_flight_option_input() {
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
 
 }
+
+void FlightManager::identifyEssentialAirports() {
+    set<string> essentialCountries;
+
+    for (const auto &airport : airports) {
+        set<string> visitedCountries;
+        auto startVertex = flights.findVertex(airport);
+
+        dfscountries(startVertex, visitedCountries, true);
+
+        bool isEssential = false;
+        for (const auto &otherAirport : airports) {
+            if (visitedCountries.find(otherAirport.getCountry()) == visitedCountries.end()) {
+                isEssential = true;
+                break;
+            }
+        }
+
+        if (isEssential) {
+            essentialCountries.insert(airport.getCountry());
+        }
+    }
+
+    cout << "Essential Airports:\n";
+    for (const auto &essentialCountry : essentialCountries) {
+        cout << "Airports in Country " << essentialCountry << " are essential.\n";
+    }
+}
+
+
+
