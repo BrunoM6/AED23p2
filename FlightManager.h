@@ -44,7 +44,7 @@ public:
     void greatest_traffic_capacity();
     void essential_airports();
     void best_flight_option_input();
-    void best_flight_option(string src, string dest);
+    void best_flight_option(list<string> src, list<string> dest);
 
 };
 #endif //PROJETO2_FLIGHTMANAGER_H

@@ -368,11 +368,11 @@ void FlightManager::best_flight_option_input() {
     Menu menu;
     menu.print_ask_for_flight_option();
     cout << "Choose the option you want to do: ";
-    string src;
-    string dest;
+    list<string> src;
+    list<string> dest;
     char i;
     cin >> i;
-    cout << "             Choose the source!";
+    cout << "             Choose the source!\n";
     if(i == '1'){
         cout << "---------------------"<<'\n';
         cout << "| 1- Code           |"<<'\n';
@@ -382,17 +382,19 @@ void FlightManager::best_flight_option_input() {
         if(i == '1'){
             string  code;
             cin >> code;
-            src = code;
+            src.push_back(code);
+            if(src.size()==0)cout <<"Invalid Input!\n";
         }
         if(i == '2'){
             string name;
             cin >> name;
             for(auto airport: airports){
                 if(airport.getName() == name){
-                    src = airport.getCode();
+                    src.push_back(airport.getCode());
                     break;
                 }
             }
+            if(src.size()==0)cout <<"Invalid Input!\n";
         }
     };
     if(i == '2'){
@@ -401,13 +403,57 @@ void FlightManager::best_flight_option_input() {
         cin >> city;
         for(auto airport: airports){
             if(airport.getCity() == city){
-                src = airport.getCode();
-                break;
+                src.push_back(airport.getCode());
             }
         }
+        if(src.size()==0)cout <<"Invalid Input!\n";
     }
     if(i == '3');
     if(i == '4')return;
     else cout <<"Invalid Input!\n";
+    menu.print_ask_for_flight_option();
+    cout << "Choose the option you want to do: ";
+    cout << "             Choose the destination!\n";
+    if(i == '1'){
+        cout << "---------------------"<<'\n';
+        cout << "| 1- Code           |"<<'\n';
+        cout << "| 2- Name           |"<<'\n';
+        cout << "---------------------"<<'\n';
+        cout << "Choose the option you want to do: ";
+        if(i == '1'){
+            string  code;
+            cin >> code;
+            dest.push_back(code);
+            if(dest.size()==0)cout <<"Invalid Input!\n";
+        }
+        if(i == '2'){
+            string name;
+            cin >> name;
+            for(auto airport: airports){
+                if(airport.getName() == name){
+                    dest.push_back(airport.getCode());
+                    break;
+                }
+            }
+            if(dest.size()==0)cout <<"Invalid Input!\n";
+        }
+    };
+    if(i == '2'){
+        cout << "City name: ";
+        string city;
+        cin >> city;
+        for(auto airport: airports){
+            if(airport.getCity() == city){
+                dest.push_back(airport.getCode());
+            }
+        }
+        if(dest.size()==0)cout <<"Invalid Input!\n";
+    }
+    if(i == '3');
+    if(i == '4')return;
+    else cout <<"Invalid Input!\n";
+    best_flight_option(src,dest);
+}
+void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
 
 }
