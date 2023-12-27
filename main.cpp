@@ -135,6 +135,7 @@ int main(){
                             flightManager.greatest_traffic_capacity();
                             break;
                         case '9':
+                            flightManager.essential_airports();
                             break;
                         default:
                             cout <<"Invalid Input!\n";

@@ -80,7 +80,7 @@ void FlightManager::number_of_flights_cities() {
         cout << "Invalid Input!\n";
         return;
     }
-    cout << "The airline " << city << " has " << res << " flights!\n";
+    cout << "The city " << city << " has " << res << " flights!\n";
 }
 void FlightManager::number_of_countries_airport() {
     string airport;
@@ -364,6 +364,29 @@ void FlightManager::greatest_traffic_capacity() {
     cout << "Latitude: " <<airport.getLatitude()<<'\n';
     cout << "Longitude: " << airport.getLongitude() <<'\n';
 }
+void FlightManager::essential_airports() {
+    int essentialCount = 0;
+
+    for (const auto &airport : airports) {
+        set<string> visitedCountries;
+        Vertex<Airport> *v = flights.findVertex(airport);
+
+        if (v != nullptr && !v->isVisited()) {
+            dfscountries(v, visitedCountries, true);
+
+            for (const auto &otherAirport : airports) {
+                if (!(otherAirport.getCountry() == airport.getCountry() && otherAirport.getName() == airport.getName())) {
+                    auto otherVertex = flights.findVertex(otherAirport);
+                    if (otherVertex != nullptr && visitedCountries.find(otherAirport.getCountry()) == visitedCountries.end()) {
+                        essentialCount++;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    cout << essentialCount << '\n';
+}
 void FlightManager::best_flight_option_input() {
     Menu menu;
     menu.print_ask_for_flight_option();
@@ -372,7 +395,7 @@ void FlightManager::best_flight_option_input() {
     list<string> dest;
     char i;
     cin >> i;
-    cout << "             Choose the source!\n";
+    cout << "Choose the source!\n";
     if(i == '1'){
         cout << "---------------------"<<'\n';
         cout << "| 1- Code           |"<<'\n';
@@ -432,7 +455,7 @@ void FlightManager::best_flight_option_input() {
     cout << "Choose the option you want to do: ";
     char l;
     cin >> l;
-    cout << "             Choose the destination!\n";
+    cout << "Choose the destination!\n";
     if(l == '1'){
         cout << "---------------------"<<'\n';
         cout << "| 1- Code           |"<<'\n';
@@ -490,6 +513,58 @@ void FlightManager::best_flight_option_input() {
     }
     best_flight_option(src,dest);
 }
+void FlightManager::dfs_best_flight(Vertex<Airport> *src,Vertex<Airport> *dest,vector<string>& path,vector<vector<string>>&paths,int k) {
+    src->setVisited(true);
+    string city = src->getInfo().getName() + " , " + src->getInfo().getCity();
+    path.push_back(city);
+    if(src == dest)paths.push_back(path);
+    for(auto e : src->getAdj()){
+        auto w = e.getDest();
+        if(!w->isVisited()){
+            dfs_best_flight(w,dest,path,paths,k+1);
+        }
+    }
+}
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
+    vector<vector<string>>res;
+    for(auto v : flights.getVertexSet())v->setVisited(false);
+    for(auto airport : src){
+        for(auto destport: dest){
+            auto airsrc = airports.find(Airport(airport));
+            auto airdest = airports.find(Airport(destport));
+            auto v = flights.findVertex(*airsrc);
+            auto v2 = flights.findVertex(*airdest);
+            vector<vector<string>> temp;
+            vector<string> tempath;
+            dfs_best_flight(v,v2,tempath,temp,0);
+            res.insert(res.end(),temp.begin(),temp.end());
+        }
+    }
+    int min = 0;
+    bool first_time = true;
+    for(auto path: res){
+        if(first_time){
+            first_time = false;
+            min = path.size();
+        }
+        else if(path.size() < min){
+            min = path.size();
+        }
+    }
+    for(auto path : res){
+        first_time = true;
+        if(path.size() == min){
+            cout << "Path: \n";
+            for(auto city : path){
+                if(!first_time){
+                    cout << "     | \n";
+                    cout << "     | \n";
+                    cout << "     | \n";
+                }
+                first_time = false;
+                cout << city << '\n';
+            }
+        }
+    }
 
 }
