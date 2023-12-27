@@ -23,6 +23,7 @@ private:
     void dfsairport(Vertex<Airport>*v,set<Airport>& res,bool first_time);
     void dfscities(Vertex<Airport>*v,set<string>& res,bool first_time);
     void dfscountries(Vertex<Airport>*v,set<string>& res,bool first_time);
+    void dfs_essential_airports(Vertex<Airport>*v,int& index,set<Airport>& res,Vertex<Airport> *parent);
     void dfs_best_flight(Vertex<Airport>*src,Vertex<Airport>*dest,vector<string>& path,vector<vector<string>>&paths,int k);
 
 

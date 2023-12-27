@@ -365,28 +365,45 @@ void FlightManager::greatest_traffic_capacity() {
     cout << "Longitude: " << airport.getLongitude() <<'\n';
 }
 void FlightManager::essential_airports() {
-    int essentialCount = 0;
-
-    for (const auto &airport : airports) {
-        set<string> visitedCountries;
-        Vertex<Airport> *v = flights.findVertex(airport);
-
-        if (v != nullptr && !v->isVisited()) {
-            dfscountries(v, visitedCountries, true);
-
-            for (const auto &otherAirport : airports) {
-                if (!(otherAirport.getCountry() == airport.getCountry() && otherAirport.getName() == airport.getName())) {
-                    auto otherVertex = flights.findVertex(otherAirport);
-                    if (otherVertex != nullptr && visitedCountries.find(otherAirport.getCountry()) == visitedCountries.end()) {
-                        essentialCount++;
-                        break;
-                    }
-                }
-            }
+    set<Airport> res;
+    int index = 1;
+    for (auto v : flights.getVertexSet()) {
+        v->setVisited(false);
+        v->setNum(0);
+        v->setLow(0);
+    }
+    for (auto v : flights.getVertexSet()) {
+        if (!v->isVisited()) {
+            dfs_essential_airports(v, index, res, nullptr);
         }
     }
-    cout << essentialCount << '\n';
+    cout <<"There are "<< res.size()<<" essential airports!";
 }
+
+void FlightManager::dfs_essential_airports(Vertex<Airport> *v, int& index, set<Airport> &res, Vertex<Airport> *parent) {
+    v->setVisited(true);
+    v->setNum(index);
+    v->setLow(index);
+    index++;
+    int children = 0;
+    for (auto e : v->getAdj()) {
+        auto w = e.getDest();
+        if (w == parent) {
+            continue;
+        }
+        if (!w->isVisited()) {
+            children++;
+            dfs_essential_airports(w, index, res, v);
+            v->setLow(min(v->getLow(), w->getLow()));
+            if ((parent != nullptr && w->getLow() >= v->getNum()) || (parent == nullptr && children > 1)) {
+                res.insert(v->getInfo());
+            }
+        } else {
+            v->setLow(min(v->getLow(), w->getNum()));
+        }
+    }
+}
+
 void FlightManager::best_flight_option_input() {
     Menu menu;
     menu.print_ask_for_flight_option();
