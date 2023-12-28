@@ -530,58 +530,7 @@ void FlightManager::best_flight_option_input() {
     }
     best_flight_option(src,dest);
 }
-void FlightManager::dfs_best_flight(Vertex<Airport> *src,Vertex<Airport> *dest,vector<string>& path,vector<vector<string>>&paths,int k) {
-    src->setVisited(true);
-    string city = src->getInfo().getName() + " , " + src->getInfo().getCity();
-    path.push_back(city);
-    if(src == dest)paths.push_back(path);
-    for(auto e : src->getAdj()){
-        auto w = e.getDest();
-        if(!w->isVisited()){
-            dfs_best_flight(w,dest,path,paths,k+1);
-        }
-    }
-}
+
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
-    vector<vector<string>>res;
-    for(auto v : flights.getVertexSet())v->setVisited(false);
-    for(auto airport : src){
-        for(auto destport: dest){
-            auto airsrc = airports.find(Airport(airport));
-            auto airdest = airports.find(Airport(destport));
-            auto v = flights.findVertex(*airsrc);
-            auto v2 = flights.findVertex(*airdest);
-            vector<vector<string>> temp;
-            vector<string> tempath;
-            dfs_best_flight(v,v2,tempath,temp,0);
-            res.insert(res.end(),temp.begin(),temp.end());
-        }
-    }
-    int min = 0;
-    bool first_time = true;
-    for(auto path: res){
-        if(first_time){
-            first_time = false;
-            min = path.size();
-        }
-        else if(path.size() < min){
-            min = path.size();
-        }
-    }
-    for(auto path : res){
-        first_time = true;
-        if(path.size() == min){
-            cout << "Path: \n";
-            for(auto city : path){
-                if(!first_time){
-                    cout << "     | \n";
-                    cout << "     | \n";
-                    cout << "     | \n";
-                }
-                first_time = false;
-                cout << city << '\n';
-            }
-        }
-    }
 
 }
