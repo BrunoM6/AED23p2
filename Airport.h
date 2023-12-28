@@ -38,6 +38,7 @@ public:
     void setLongitude(double longitude);
     bool operator<(const Airport airport) const;
     bool operator==(const Airport airport) const;
+    double distance(double latitude1, double longitude1) const;
 };
 
 #endif //PROJETO2_AIRPORT_H

@@ -462,7 +462,27 @@ void FlightManager::best_flight_option_input() {
             return;
         }
     }
-    else if(i == '3');
+    else if(i == '3'){
+        cout << "Latitude:";
+        double latitude;
+        cin >> latitude;
+        cout << "Longitude:";
+        double longitude;
+        cin >> longitude;
+
+        double closestDistance = INT_MAX;
+        string closestAirport;
+        string airportCode;
+
+        for(auto airport = airports.begin(); airport != airports.end(); airport++){
+            double distance = airport -> distance(latitude,longitude);
+            if (distance < closestDistance){
+                closestDistance = distance;
+                airportCode = airport -> getCode();
+            }
+        }
+        src.push_back(airportCode);
+    }
     else if(i == '4')return;
     else {
         cout <<"Invalid Input!\n";
@@ -522,7 +542,27 @@ void FlightManager::best_flight_option_input() {
             return;
         }
     }
-    else if(l == '3');
+    else if(l == '3'){
+        cout << "Latitude:";
+        double latitude;
+        cin >> latitude;
+        cout << "Longitude:";
+        double longitude;
+        cin >> longitude;
+
+        double closestDistance = INT_MAX;
+        string closestAirport;
+        string airportCode;
+
+        for(auto airport = airports.begin(); airport != airports.end(); airport++){
+            double distance = airport -> distance(latitude,longitude);
+            if (distance < closestDistance){
+                closestDistance = distance;
+                airportCode = airport -> getCode();
+            }
+        }
+        dest.push_back(airportCode);
+    }
     else if(l == '4')return;
     else {
         cout <<"Invalid Input!\n";
