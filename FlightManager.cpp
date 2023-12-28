@@ -474,14 +474,16 @@ void FlightManager::best_flight_option_input() {
         double closestDistance = INT_MAX;
         string closestAirport;
         string airportCode;
-
+        string airportName;
         for(auto airport = airports.begin(); airport != airports.end(); airport++){
             double distance = airport -> distance(latitude,longitude);
             if (distance < closestDistance){
                 closestDistance = distance;
                 airportCode = airport -> getCode();
+                airportName = airport->getName();
             }
         }
+        cout << "The closest airport is " + airportName + ".\n";
         src.push_back(airportCode);
     }
     else if(i == '4')return;
@@ -554,14 +556,16 @@ void FlightManager::best_flight_option_input() {
         double closestDistance = INT_MAX;
         string closestAirport;
         string airportCode;
-
+        string airportName;
         for(auto airport = airports.begin(); airport != airports.end(); airport++){
             double distance = airport -> distance(latitude,longitude);
             if (distance < closestDistance){
                 closestDistance = distance;
                 airportCode = airport -> getCode();
+                airportName = airport->getName();
             }
         }
+        cout << "The closest airport is " + airportName + ".\n";
         dest.push_back(airportCode);
     }
     else if(l == '4')return;
