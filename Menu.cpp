@@ -8,7 +8,7 @@ void Menu::print_mainMenu() {
     cout << "--------------------Menu---------------------"<< '\n';
     cout << "| 1-Consult                                 |"<<'\n';
     cout << "| 2-Best Flight Options                     |"<< '\n';
-    cout << "| 3-Best Flight Option Filtred              |"<< '\n';
+    cout << "| 3-Best Flight Option Filtered              |"<< '\n';
     cout << "| 4-Quit                                    |" << '\n';
     cout << "---------------------------------------------"<< '\n';
     cout << "Choose the option you want to do: ";
@@ -74,6 +74,15 @@ void Menu::print_numberDestinationsXMenu() {
 }
 void Menu::print_ask_for_flight_option() {
     cout << "----------Best Flight Option-----------"<<'\n';
+    cout << "| 1- Airport(code/name)               |"<<'\n';
+    cout << "| 2- City                             |"<<'\n';
+    cout << "| 3- Coordinates                      |"<<'\n';
+    cout << "| 4- Quit                             |"<<'\n';
+    cout << "---------------------------------------"<<'\n';
+}
+
+void Menu::print_ask_for_flight_option_filtered() {
+    cout << "----------Best Flight Option Filtered-----------"<<'\n';
     cout << "| 1- Airport(code/name)               |"<<'\n';
     cout << "| 2- City                             |"<<'\n';
     cout << "| 3- Coordinates                      |"<<'\n';

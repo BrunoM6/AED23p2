@@ -52,5 +52,7 @@ public:
     void bestFlightOptionWithFilters(const string &srcCode, const string &destCode, const set<string> &preferredAirlines);
     void dfsBestFlightWithFilters(Vertex<Airport> *src, Vertex<Airport> *dest, vector<string> &path,
                                   vector<vector<string>> &paths, int k, const set<string> &preferredAirlines);
+
+    void bestFlightOptionWithFiltersInput();
 };
 #endif //PROJETO2_FLIGHTMANAGER_H

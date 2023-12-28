@@ -148,7 +148,7 @@ int main(){
                 flightManager.best_flight_option_input();
                 break;
             case '3':
-                cout << "Filtred flight Option \n";
+                flightManager.bestFlightOptionWithFiltersInput();
                 break;
             case '4':
                 close = true;
