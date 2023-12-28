@@ -3,6 +3,7 @@
 //
 #include "FlightManager.h"
 #include "Menu.h"
+#include "math.h"
 
 FlightManager::FlightManager() {
     Parser parser1;
@@ -569,6 +570,22 @@ void FlightManager::best_flight_option_input() {
         return;
     }
     best_flight_option(src,dest);
+}
+
+double Airport::distance(double latitude1, double longitude1) const {
+    double dLat = (latitude1 - latitude) *
+                  M_PI / 180.0;
+    double dLon = (longitude1 - longitude) *
+                  M_PI / 180.0;
+
+    double lat1 = (latitude) * M_PI / 180.0;
+    double lat2 = (latitude1) * M_PI / 180.0;
+
+    double a = pow(sin(dLat / 2), 2) +
+               pow(sin(dLon / 2), 2) *
+               cos(lat1) * cos(lat2);
+
+    return 6371 * 2 * asin(sqrt(a));
 }
 
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
