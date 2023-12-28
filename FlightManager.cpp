@@ -464,13 +464,24 @@ void FlightManager::best_flight_option_input() {
         }
     }
     else if(i == '3'){
-        cout << "Latitude:";
         double latitude;
-        cin >> latitude;
-        cout << "Longitude:";
         double longitude;
-        cin >> longitude;
-
+        while(true) {
+            cout << "Latitude:";
+            cin >> latitude;
+            if(latitude < -90 || latitude > 90){
+                cout << "Invalid latitude, try again! \n";
+            }
+            else break;
+        }
+        while(true) {
+            cout << "Longitude:";
+            cin >> longitude;
+            if(longitude < -180 || longitude > 180){
+                cout << "Invalid latitude, try again! \n";
+            }
+            else break;
+        }
         double closestDistance = INT_MAX;
         string closestAirport;
         string airportCode;
@@ -546,12 +557,24 @@ void FlightManager::best_flight_option_input() {
         }
     }
     else if(l == '3'){
-        cout << "Latitude:";
         double latitude;
-        cin >> latitude;
-        cout << "Longitude:";
         double longitude;
-        cin >> longitude;
+        while(true) {
+            cout << "Latitude:";
+            cin >> latitude;
+            if(latitude < -90 || latitude > 90){
+                cout << "Invalid latitude, try again! \n";
+            }
+            else break;
+        }
+        while(true) {
+            cout << "Longitude:";
+            cin >> longitude;
+            if(longitude < -180 || longitude > 180){
+                cout << "Invalid latitude, try again! \n";
+            }
+            else break;
+        }
 
         double closestDistance = INT_MAX;
         string closestAirport;
