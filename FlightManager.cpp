@@ -532,5 +532,65 @@ void FlightManager::best_flight_option_input() {
 }
 
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
-
+    vector<list<string>> res;
+    for (auto v : flights.getVertexSet())v->setVisited(false);
+    for(auto vsrc :src){
+        for(auto vdest:dest){
+            auto airsrc = airports.find(Airport(vsrc));
+            auto airdest = airports.find(Airport(vdest));
+            auto vertexsrc = flights.findVertex(*airsrc);
+            auto verterxdest = flights.findVertex(*airdest);
+            queue<pair<Vertex<Airport>*,list<string>>> vertexpath;
+            list<string> path;
+            string destcity = verterxdest->getInfo().getName() + " , " + verterxdest->getInfo().getCity();
+            vertexpath.push({vertexsrc,path});
+            vertexsrc->setVisited(true);
+            while(!vertexpath.empty()){
+                auto vpath = vertexpath.front();
+                vertexpath.pop();
+                string city = vpath.first->getInfo().getName() + " , " + vpath.first->getInfo().getCity();
+                auto itr = std::find(vpath.second.begin(), vpath.second.end(),destcity);
+                if(itr == vpath.second.end()){
+                    vpath.second.push_back(city);
+                }
+                if(vpath.first == verterxdest)res.push_back(vpath.second);
+                for(auto e : vpath.first->getAdj()){
+                    auto w = e.getDest();
+                    if(!w->isVisited()){
+                        vertexpath.push({w,vpath.second});
+                        w->setVisited(true);
+                    }
+                }
+            }
+        }
+    }
+    int min = 0;
+    bool first_time = true;
+    for(auto i : res){
+        if(first_time){
+            min = i.size();
+            first_time = false;
+        }
+        else if(i.size() < min){
+            min = i.size();
+        }
+    }
+    for(auto i : res){
+        first_time = true;
+        if(i.size() == min){
+            for(auto city : i){
+                if(first_time){
+                    cout << "PATH:\n";
+                    first_time = false;
+                    cout << city<<"\n";
+                }
+                else{
+                    cout << "     | \n";
+                    cout << "     | \n";
+                    cout << "     v \n";
+                    cout << city <<"\n";
+                }
+            }
+        }
+    }
 }

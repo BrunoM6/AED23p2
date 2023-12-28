@@ -13,6 +13,7 @@
 #include "Parser.h"
 #include "unordered_set"
 #include <iostream>
+#include <algorithm>
 using namespace std;
 class FlightManager {
 private:
