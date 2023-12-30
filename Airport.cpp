@@ -48,3 +48,25 @@ bool Airport::operator<(const Airport airport) const {
 bool Airport::operator==(const Airport airport) const {
     return (this->code == airport.code && this->name == airport.name && this->city == airport.city && this->country == airport.country && this->latitude == airport.latitude && this->longitude == airport.longitude);
 }
+/**
+ * Calculates and returns the distance between an airport and a location provided on the arguments as latitude and
+ * longitude.
+ * @param latitude1 of location
+ * @param longitude1 of location
+ * @return distance
+ */
+double Airport::distance(double latitude1, double longitude1) const {
+    double dLat = (latitude1 - latitude) *
+                  M_PI / 180.0;
+    double dLon = (longitude1 - longitude) *
+                  M_PI / 180.0;
+
+    double lat1 = (latitude) * M_PI / 180.0;
+    double lat2 = (latitude1) * M_PI / 180.0;
+
+    double a = pow(sin(dLat / 2), 2) +
+               pow(sin(dLon / 2), 2) *
+               cos(lat1) * cos(lat2);
+
+    return 6371 * 2 * asin(sqrt(a));
+}

@@ -2,6 +2,8 @@
 // Created by brunow on 18-12-2023.
 //
 #include <string>
+#include <cmath>
+
 using namespace std;
 /**
  * @class Airport

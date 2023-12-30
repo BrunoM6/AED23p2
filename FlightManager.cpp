@@ -1,6 +1,7 @@
 //
 // Created by brunow on 19-12-2023.
 //
+#include <climits>
 #include "FlightManager.h"
 #include "Menu.h"
 #include "math.h"
@@ -579,19 +580,19 @@ void FlightManager::best_flight_option_input() {
             else break;
         }
         double closestDistance = INT_MAX;
-        string closestAirport;
-        string airportCode;
-        string airportName;
         for(auto airport = airports.begin(); airport != airports.end(); airport++){
             double distance = airport -> distance(latitude,longitude);
             if (distance < closestDistance){
                 closestDistance = distance;
-                airportCode = airport -> getCode();
-                airportName = airport->getName();
             }
         }
-        cout << "The closest airport is " + airportName + ".\n";
-        src.push_back(airportCode);
+        for(auto airport = airports.begin(); airport != airports.end(); airport++){
+            double distance = airport -> distance(latitude,longitude);
+            if (distance == closestDistance){
+                src.push_back(airport->getCode());
+                cout << "The closest airport is " + airport->getName() + ".\n";
+            }
+        }
     }
     else if(i == '4')return;
     else {
@@ -673,19 +674,19 @@ void FlightManager::best_flight_option_input() {
         }
 
         double closestDistance = INT_MAX;
-        string closestAirport;
-        string airportCode;
-        string airportName;
         for(auto airport = airports.begin(); airport != airports.end(); airport++){
             double distance = airport -> distance(latitude,longitude);
             if (distance < closestDistance){
                 closestDistance = distance;
-                airportCode = airport -> getCode();
-                airportName = airport->getName();
             }
         }
-        cout << "The closest airport is " + airportName + ".\n";
-        dest.push_back(airportCode);
+        for(auto airport = airports.begin(); airport != airports.end(); airport++){
+            double distance = airport -> distance(latitude,longitude);
+            if (distance == closestDistance){
+                dest.push_back(airport->getCode());
+                cout << "The closest airport is " + airport->getName() + ".\n";
+            }
+        }
     }
     else if(l == '4')return;
     else {
@@ -696,28 +697,6 @@ void FlightManager::best_flight_option_input() {
 }
 
 
-/**
- * Calculates and returns the distance between an airport and a location provided on the arguments as latitude and
- * longitude.
- * @param latitude1 of location
- * @param longitude1 of location
- * @return distance
- */
-double Airport::distance(double latitude1, double longitude1) const {
-    double dLat = (latitude1 - latitude) *
-                  M_PI / 180.0;
-    double dLon = (longitude1 - longitude) *
-                  M_PI / 180.0;
-
-    double lat1 = (latitude) * M_PI / 180.0;
-    double lat2 = (latitude1) * M_PI / 180.0;
-
-    double a = pow(sin(dLat / 2), 2) +
-               pow(sin(dLon / 2), 2) *
-               cos(lat1) * cos(lat2);
-
-    return 6371 * 2 * asin(sqrt(a));
-}
 
 /**
      * @brief Finds the best flight options between specified source and destination airports or cities.
