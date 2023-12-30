@@ -6,6 +6,10 @@
 #include <sstream>
 #include <iostream>
 
+/**
+     * @brief Parses airport data from the "airports.csv" file.
+     * @return Set of Airport objects.
+     */
 set<Airport> Parser::parseAirports() {
     ifstream in;
     in.open("../dataset/airports.csv");
@@ -33,6 +37,10 @@ set<Airport> Parser::parseAirports() {
     return airports;
 }
 
+/**
+     * @brief Parses airline data from the "airlines.csv" file.
+     * @return Set of Airline objects.
+     */
 set<Airline>  Parser::parseAirlines() {
     ifstream in;
     in.open("../dataset/airlines.csv");
@@ -54,6 +62,10 @@ set<Airline>  Parser::parseAirlines() {
     return airlines;
 }
 
+/**
+     * @brief Parses flight data from the "flights.csv" file and constructs a graph of airports.
+     * @return Graph representing flights between airports.
+     */
 Graph<Airport>  Parser::parseFlights() {
     ifstream in;
     in.open("../dataset/flights.csv");

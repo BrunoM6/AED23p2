@@ -36,8 +36,27 @@ public:
     void setLatitude(double latitude);
     double getLongitude() const;
     void setLongitude(double longitude);
+
+    /**
+     * @brief Checks if this airport has less priority than the specified airport by comparing their codes.
+     * @param airport Airport to be compared.
+     * @return True if this airport has less priority than the specified airport, else false.
+     */
     bool operator<(const Airport airport) const;
+
+    /**
+     * @brief Checks if this airport is equal to the specified airport by comparing their codes.
+     * @param airport Airport to be compared.
+     * @return True if this airport is equal to the specified airport, else false.
+     */
     bool operator==(const Airport airport) const;
+
+    /**
+     * Calculates the distance between an airport and a location
+     * @param latitude1 of location
+     * @param longitude1 of location
+     * @return distance
+     */
     double distance(double latitude1, double longitude1) const;
 };
 

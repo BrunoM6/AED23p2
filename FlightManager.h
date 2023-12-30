@@ -21,8 +21,29 @@ private:
     set<Airport> airports;
     set<Airline> airlines;
     Graph<Airport> flights;
+
+    /**
+     * @brief Depth-first search to find connected airports.
+     * @param v Starting vertex for DFS.
+     * @param res Set to store the result.
+     * @param first_time Flag indicating the first time DFS is called.
+     */
     void dfsairport(Vertex<Airport>*v,set<Airport>& res,bool first_time);
+
+    /**
+     * @brief Depth-first search to find connected cities.
+     * @param v Starting vertex for DFS.
+     * @param res Set to store the result.
+     * @param first_time Flag indicating the first time DFS is called.
+     */
     void dfscities(Vertex<Airport>*v,set<string>& res,bool first_time);
+
+    /**
+     * @brief Depth-first search to find connected countries.
+     * @param v Starting vertex for DFS.
+     * @param res Set to store the result.
+     * @param first_time Flag indicating the first time DFS is called.
+     */
     void dfscountries(Vertex<Airport>*v,set<string>& res,bool first_time);
     void dfs_essential_airports(Vertex<Airport>*v,int& index,set<Airport>& res,Vertex<Airport> *parent);
 

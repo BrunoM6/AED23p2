@@ -7,6 +7,11 @@
 
 #include <iostream>
 using namespace std;
+
+/**
+ * @class Menu
+ * @brief Handles the printing of various menus for user interaction.
+ */
 class Menu {
     public:
     void print_mainMenu();

@@ -29,7 +29,19 @@ public:
     void setCallsign(string callsign);
     string getCountry() const;
     void setCountry(string country);
+
+    /**
+     * Checks if this airport has less priority than airport a2 by comparing their code using operator <
+     * @param a2 airport to be compared
+     * @return true if this airport has less priority than airport a2, else false
+     */
     bool operator<(const Airline airline) const;
+
+    /**
+     * Checks if this airport is equal to airport a2 by comparing their code using operator ==
+     * @param a2 airport to be compared
+     * @return true if this airport is equal to airport a2, else false
+     */
     bool operator==(const Airline airline) const;
 };
 

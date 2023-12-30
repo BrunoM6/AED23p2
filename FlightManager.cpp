@@ -12,14 +12,24 @@ FlightManager::FlightManager() {
     airlines = parser.parseAirlines();
     flights = parser.parseFlights();
 }
+
+/**
+ * @brief Displays the number of airports.
+ */
 void FlightManager::number_of_airports() {
     cout << "Number of airports: "<< airports.size()<<'\n';
 }
 
+/**
+ * @brief Displays the number of airlines.
+ */
 void FlightManager::number_of_airlines() {
     cout << "Number of airlines: "<< airlines.size()<<'\n';
 }
 
+/**
+ * @brief Displays the total number of flights available.
+ */
 void FlightManager::number_of_flights_available() {
     int res = 0;
     for(auto airport : flights.getVertexSet()) {
@@ -27,6 +37,10 @@ void FlightManager::number_of_flights_available() {
     }
     cout << "Number of flights available: " << res<<'\n';
 }
+
+/**
+ * @brief Displays the number of flights departing from a specific airport.
+ */
 void FlightManager::number_of_flights_out() {
     string airport;
     cout << "Code of airport: ";
@@ -43,6 +57,10 @@ void FlightManager::number_of_flights_out() {
     }
     cout << "The airport " << airport << " has " << v->getAdj().size() << " flights and " << diffairlines.size() << " airlines!\n";
 }
+
+/**
+ * @brief Displays the number of flights for a specific airline.
+ */
 void FlightManager::number_of_flights_airline() {
     string airline;
     cout << "Code of the airline: ";
@@ -63,6 +81,10 @@ void FlightManager::number_of_flights_airline() {
     }
     cout << "The airline " << airline << " has " << res << " flights!\n";
 }
+
+/**
+ * @brief Displays the number of flights for a specific city.
+ */
 void FlightManager::number_of_flights_cities() {
     string city;
     cout << "Name of the city: ";
@@ -83,6 +105,10 @@ void FlightManager::number_of_flights_cities() {
     }
     cout << "The city " << city << " has " << res << " flights!\n";
 }
+
+/**
+ * @brief Displays the number of countries an airport can fly to.
+ */
 void FlightManager::number_of_countries_airport() {
     string airport;
     cout << "Code of airport: ";
@@ -99,6 +125,10 @@ void FlightManager::number_of_countries_airport() {
     }
     cout << "The airport " << airport << " can fly to "<< diffcountries.size() << " countries!\n";
 }
+
+/**
+ * @brief Displays the number of countries a city can fly to.
+ */
 void FlightManager::number_of_countries_city() {
     string city;
     cout << "Name of the city: ";
@@ -119,6 +149,10 @@ void FlightManager::number_of_countries_city() {
     }
     cout << "The city " << city << " can fly to " << diffcountries.size() << " countries!\n";
 }
+
+/**
+ * @brief Displays the number of destinations an airport can reach.
+ */
 void FlightManager::number_of_destinations_airport() {
     string airport;
     cout << "Code of airport: ";
@@ -134,6 +168,13 @@ void FlightManager::number_of_destinations_airport() {
     dfsairport(v,diffairports, true);
     cout << "The airport " << airport << " can reach " <<diffairports.size()<< " airports!\n";
 }
+
+/**
+ * @brief Depth-first search to find connected airports.
+ * @param v Starting vertex for DFS.
+ * @param res Set to store the result.
+ * @param first_time Flag indicating the first time DFS is called.
+ */
 void FlightManager::dfsairport(Vertex<Airport>*v, set<Airport>& res, bool first_time) {
     v->setVisited(true);
     if(!first_time)res.insert((*v).getInfo());
@@ -142,6 +183,10 @@ void FlightManager::dfsairport(Vertex<Airport>*v, set<Airport>& res, bool first_
         if(!dest->isVisited())dfsairport(dest,res, false);
     }
 }
+
+/**
+ * @brief Displays the number of destinations a city can reach.
+ */
 void FlightManager::number_of_destinations_cities() {
     string airport;
     cout << "Code of airport: ";
@@ -157,6 +202,13 @@ void FlightManager::number_of_destinations_cities() {
     dfscities(v,diffcities,true);
     cout << "The airport " << airport << " can reach " <<diffcities.size()<< " cities!\n";
 }
+
+/**
+ * @brief Depth-first search to find connected cities.
+ * @param v Starting vertex for DFS.
+ * @param res Set to store the result.
+ * @param first_time Flag indicating the first time DFS is called.
+ */
 void FlightManager::dfscities(Vertex<Airport> *v, set<std::string>& res, bool first_time) {
     v->setVisited(true);
     if(!first_time)res.insert((*v).getInfo().getCity());
@@ -165,6 +217,10 @@ void FlightManager::dfscities(Vertex<Airport> *v, set<std::string>& res, bool fi
         if(!dest->isVisited())dfscities(dest,res, false);
     }
 }
+
+/**
+ * @brief Displays the number of destinations a country can fly to from a specific airport.
+ */
 void FlightManager::number_of_destinations_countries() {
     string airport;
     cout << "Code of airport: ";
@@ -180,6 +236,13 @@ void FlightManager::number_of_destinations_countries() {
     dfscountries(v,diffcountries, true);
     cout << "The airport " << airport << " can reach " <<diffcountries.size()<< " countries!\n";
 }
+
+/**
+ * @brief Depth-first search to find connected countries.
+ * @param v Starting vertex for DFS.
+ * @param res Set to store the result.
+ * @param first_time Flag indicating the first time DFS is called.
+ */
 void FlightManager::dfscountries(Vertex<Airport> *v, set<std::string> &res, bool first_time) {
     v->setVisited(true);
     if(!first_time)res.insert((*v).getInfo().getCountry());
@@ -188,6 +251,10 @@ void FlightManager::dfscountries(Vertex<Airport> *v, set<std::string> &res, bool
         if(!des->isVisited())dfscountries(des,res,false);
     }
 }
+
+/**
+ * @brief Displays the number of destinations an airport can reach with a specific number of stops.
+ */
 void FlightManager::number_of_destinations_airport_x() {
     string airport;
     cout << "Code of airport: ";
@@ -221,6 +288,10 @@ void FlightManager::number_of_destinations_airport_x() {
     }
     cout << "The airport " << airport << " can reach " <<diffairports.size()<< " airports with " << k << " stops!\n";
 }
+
+/**
+     * @brief Finds the number of destinations (cities) that can be reached from a given airport within a specified number of stops.
+     */
 void FlightManager::number_of_destinations_cities_x() {
     string airport;
     cout << "Code of airport: ";
@@ -255,6 +326,9 @@ void FlightManager::number_of_destinations_cities_x() {
     cout << "The airport " << airport << " can reach " <<diffcitties.size()<< " citties with " << k << " stops!\n";
 }
 
+/**
+     * @brief Finds the number of destinations (countries) that can be reached from a given airport within a specified number of stops.
+     */
 void FlightManager::number_of_destinations_countries_x() {
     string airport;
     cout << "Code of airport: ";
@@ -288,6 +362,10 @@ void FlightManager::number_of_destinations_countries_x() {
     }
     cout << "The airport " << airport << " can reach " <<diffcountries.size()<< " countries with " << k << " stops!\n";
 }
+
+/**
+     * @brief Finds the maximum trip distance and corresponding routes.
+     */
 void FlightManager::maximum_trip() {
     int max = 0;
     vector<pair<string,string>> res;
@@ -340,6 +418,10 @@ void FlightManager::maximum_trip() {
     }
     cout << "Max distance: "<< max<<'\n';
 }
+
+/**
+     * @brief Finds the airport with the greatest air traffic capacity.
+     */
 void FlightManager::greatest_traffic_capacity() {
     for(auto v : flights.getVertexSet()){
         v->setIndegree(0);
@@ -365,6 +447,10 @@ void FlightManager::greatest_traffic_capacity() {
     cout << "Latitude: " <<airport.getLatitude()<<'\n';
     cout << "Longitude: " << airport.getLongitude() <<'\n';
 }
+
+/**
+     * @brief Finds essential airports in the flight network.
+     */
 void FlightManager::essential_airports() {
     set<Airport> res;
     int index = 1;
@@ -381,6 +467,13 @@ void FlightManager::essential_airports() {
     cout <<"There are "<< res.size()<<" essential airports!";
 }
 
+/**
+     * @brief Performs a depth-first search to find essential airports.
+     * @param v Current vertex.
+     * @param index Index counter for DFS.
+     * @param res Set to store essential airports.
+     * @param parent Parent vertex in DFS.
+     */
 void FlightManager::dfs_essential_airports(Vertex<Airport> *v, int& index, set<Airport> &res, Vertex<Airport> *parent) {
     v->setVisited(true);
     v->setNum(index);
@@ -405,6 +498,9 @@ void FlightManager::dfs_essential_airports(Vertex<Airport> *v, int& index, set<A
     }
 }
 
+/**
+     * @brief Collects user input to find the best flight options between source and destination airports or cities.
+     */
 void FlightManager::best_flight_option_input() {
     Menu menu;
     menu.print_ask_for_flight_option();
@@ -599,6 +695,14 @@ void FlightManager::best_flight_option_input() {
     best_flight_option(src,dest);
 }
 
+
+/**
+ * Calculates and returns the distance between an airport and a location provided on the arguments as latitude and
+ * longitude.
+ * @param latitude1 of location
+ * @param longitude1 of location
+ * @return distance
+ */
 double Airport::distance(double latitude1, double longitude1) const {
     double dLat = (latitude1 - latitude) *
                   M_PI / 180.0;
@@ -615,6 +719,11 @@ double Airport::distance(double latitude1, double longitude1) const {
     return 6371 * 2 * asin(sqrt(a));
 }
 
+/**
+     * @brief Finds the best flight options between specified source and destination airports or cities.
+     * @param src List of source airports or cities.
+     * @param dest List of destination airports or cities.
+     */
 void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
     vector<list<string>> res;
     for (auto v : flights.getVertexSet())v->setVisited(false);
