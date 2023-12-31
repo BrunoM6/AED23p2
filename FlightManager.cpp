@@ -780,6 +780,7 @@ void FlightManager::airlines_input() {
         cin >> k;
         for(auto v = 0;v<k;v++){
             string airlinecode;
+            cout << "Airline code: ";
             cin >> airlinecode;
             bool found = false;
             for(auto air : airlines){
