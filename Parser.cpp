@@ -17,6 +17,7 @@ set<Airport> Parser::parseAirports() {
     if (!in.is_open()){
         cout << "File not found!"<<'\n';
     }
+    list<Airport> temp;
     getline(in, line);
     while (getline(in, line)) {
         stringstream ss(line);
@@ -71,16 +72,22 @@ Graph<Airport>  Parser::parseFlights() {
     in.open("../dataset/flights.csv");
     string line;
     getline(in, line);
+    Airport airport;
+    airports.insert(airport);
+    string r = "";
+    auto src = airports.find(r);
+    auto dest = airports.find(r);
     while (getline(in, line)) {
         stringstream ss(line);
         string origin, destination, airline;
         getline(ss, origin, ',');
         getline(ss, destination, ',');
         getline(ss, airline);
-        auto src = airports.find(Airport(origin));
-        auto dest = airports.find(Airport(destination));
+        if(src->getCode() != origin)src = airports.find(origin);
+        if(dest->getCode() != destination)dest = airports.find(destination);
         flights.addEdge(*src,*dest,airline);
     }
+    airports.erase(airport);
     return flights;
 }
 

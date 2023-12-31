@@ -46,7 +46,7 @@ bool Airport::operator<(const Airport airport) const {
     return code< airport.getCode();
 }
 bool Airport::operator==(const Airport airport) const {
-    return (this->code == airport.code && this->name == airport.name && this->city == airport.city && this->country == airport.country && this->latitude == airport.latitude && this->longitude == airport.longitude);
+    return this->code == airport.code ;
 }
 /**
  * Calculates and returns the distance between an airport and a location provided on the arguments as latitude and

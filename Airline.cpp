@@ -34,5 +34,5 @@ bool Airline::operator<(const Airline airline) const {
     return code < airline.getCode();
 }
 bool Airline::operator==(const Airline airline) const {
-    return (this->code == airline.code && this->name == airline.name && this->callsign == airline.callsign && this->country == airline.country);
+    return this->code == airline.code ;
 }

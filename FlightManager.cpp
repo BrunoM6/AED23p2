@@ -46,7 +46,7 @@ void FlightManager::number_of_flights_out() {
     string airport;
     cout << "Code of airport: ";
     cin >>airport;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -114,7 +114,7 @@ void FlightManager::number_of_countries_airport() {
     string airport;
     cout << "Code of airport: ";
     cin >>airport;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -158,7 +158,7 @@ void FlightManager::number_of_destinations_airport() {
     string airport;
     cout << "Code of airport: ";
     cin >>airport;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -192,7 +192,7 @@ void FlightManager::number_of_destinations_cities() {
     string airport;
     cout << "Code of airport: ";
     cin >>airport;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -226,7 +226,7 @@ void FlightManager::number_of_destinations_countries() {
     string airport;
     cout << "Code of airport: ";
     cin >>airport;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -263,7 +263,7 @@ void FlightManager::number_of_destinations_airport_x() {
     int k;
     cout << "Number of stops: ";
     cin >> k;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -300,7 +300,7 @@ void FlightManager::number_of_destinations_cities_x() {
     int k;
     cout << "Number of stops: ";
     cin >> k;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -337,7 +337,7 @@ void FlightManager::number_of_destinations_countries_x() {
     int k;
     cout << "Number of stops: ";
     cin >> k;
-    auto airp = airports.find(Airport(airport));
+    auto airp = airports.find(airport);
     if(airp == airports.end()){
         cout << "Invalid Input!\n";
         return;
@@ -707,8 +707,8 @@ void FlightManager::best_flight_option() {
     for(auto vsrc :src){
         for(auto vdest:dest){
             for (auto v : flights.getVertexSet())v->setVisited(false);
-            auto airsrc = airports.find(Airport(vsrc));
-            auto airdest = airports.find(Airport(vdest));
+            auto airsrc = airports.find(vsrc);
+            auto airdest = airports.find(vdest);
             auto vertexsrc = flights.findVertex(*airsrc);
             auto verterxdest = flights.findVertex(*airdest);
             queue<pair<Vertex<Airport>*,list<string>>> vertexpath;
@@ -737,6 +737,9 @@ void FlightManager::best_flight_option() {
     }
     int min = 0;
     bool first_time = true;
+    if(res.size() == 0){
+        cout << "There is no paht!\n";
+    }
     for(auto i : res){
         if(first_time){
             min = i.size();
@@ -808,15 +811,79 @@ void FlightManager::airlines_input() {
     }
 }
 void FlightManager::best_flight_option_filtred_airline(list<std::string> &src, list<std::string> &dest,list<std::string> airline) {
-
+    vector<list<string>> res;
+    for(auto vsrc :src){
+        for(auto vdest:dest){
+            for (auto v : flights.getVertexSet())v->setVisited(false);
+            auto airsrc = airports.find(vsrc);
+            auto airdest = airports.find(vdest);
+            auto vertexsrc = flights.findVertex(*airsrc);
+            auto verterxdest = flights.findVertex(*airdest);
+            queue<pair<Vertex<Airport>*,list<string>>> vertexpath;
+            list<string> path;
+            string destcity = verterxdest->getInfo().getName() + " , " + verterxdest->getInfo().getCity();
+            vertexpath.push({vertexsrc,path});
+            vertexsrc->setVisited(true);
+            while(!vertexpath.empty()){
+                auto vpath = vertexpath.front();
+                vertexpath.pop();
+                string city = vpath.first->getInfo().getName() + " , " + vpath.first->getInfo().getCity();
+                auto itr = std::find(vpath.second.begin(), vpath.second.end(),destcity);
+                if(itr == vpath.second.end()){
+                    vpath.second.push_back(city);
+                }
+                if(vpath.first == verterxdest)res.push_back(vpath.second);
+                for(auto e : vpath.first->getAdj()){
+                    auto w = e.getDest();
+                    auto air = std::find(airline.begin(), airline.end(),e.getWeight());
+                    if(!w->isVisited() and air != airline.end()){
+                        vertexpath.push({w,vpath.second});
+                        w->setVisited(true);
+                    }
+                }
+            }
+        }
+    }
+    int min = 0;
+    bool first_time = true;
+    if(res.size() == 0){
+        cout << "There is no paht!\n";
+    }
+    for(auto i : res){
+        if(first_time){
+            min = i.size();
+            first_time = false;
+        }
+        else if(i.size() < min){
+            min = i.size();
+        }
+    }
+    for(auto i : res){
+        first_time = true;
+        if(i.size() == min){
+            for(auto city : i){
+                if(first_time){
+                    cout << "PATH:\n";
+                    first_time = false;
+                    cout << city<<"\n";
+                }
+                else{
+                    cout << "     | \n";
+                    cout << "     | \n";
+                    cout << "     v \n";
+                    cout << city <<"\n";
+                }
+            }
+        }
+    }
 }
 void FlightManager::best_flight_option_filtred_min(list<std::string> src, list<std::string> dest) {
     vector<pair<list<string>,int>> res;
     for(auto vsrc :src){
         for(auto vdest:dest){
             for (auto v : flights.getVertexSet())v->setVisited(false);
-            auto airsrc = airports.find(Airport(vsrc));
-            auto airdest = airports.find(Airport(vdest));
+            auto airsrc = airports.find(vsrc);
+            auto airdest = airports.find(vdest);
             auto vertexsrc = flights.findVertex(*airsrc);
             auto verterxdest = flights.findVertex(*airdest);
             queue<pair<pair<Vertex<Airport>*,list<string>>,set<string>>> vertexpath;
@@ -847,6 +914,9 @@ void FlightManager::best_flight_option_filtred_min(list<std::string> src, list<s
         }
     }
     int min = 0;
+    if(res.size() == 0){
+       cout <<  "There is no paht!\n";
+    }
     bool first_time = true;
     for(auto i : res){
         if(first_time){

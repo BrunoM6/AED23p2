@@ -62,4 +62,5 @@ public:
     double distance(double latitude1, double longitude1) const;
 };
 
+
 #endif //PROJETO2_AIRPORT_H
