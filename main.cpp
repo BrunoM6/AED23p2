@@ -145,10 +145,10 @@ int main(){
                 }
                 break;
             case '2':
-                flightManager.best_flight_option_input();
+                flightManager.best_flight_option();
                 break;
             case '3':
-                cout << "Filtred flight Option \n";
+                flightManager.airlines_input();
                 break;
             case '4':
                 close = true;

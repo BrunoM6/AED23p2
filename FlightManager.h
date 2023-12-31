@@ -46,6 +46,7 @@ private:
      */
     void dfscountries(Vertex<Airport>*v,set<string>& res,bool first_time);
     void dfs_essential_airports(Vertex<Airport>*v,int& index,set<Airport>& res,Vertex<Airport> *parent);
+    void best_flight_option_input(list<string>& src, list<string>& dest);
 
 
 public:
@@ -67,8 +68,10 @@ public:
     void maximum_trip();
     void greatest_traffic_capacity();
     void essential_airports();
-    void best_flight_option_input();
-    void best_flight_option(list<string> src, list<string> dest);
+    void best_flight_option();
+    void best_flight_option_filtred_min(list<string> src, list<string> dest);
+    void best_flight_option_filtred_airline(list<string>& src, list<string>& dest,list<string> airline);
+    void airlines_input();
 
 };
 #endif //PROJETO2_FLIGHTMANAGER_H

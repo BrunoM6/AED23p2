@@ -502,12 +502,9 @@ void FlightManager::dfs_essential_airports(Vertex<Airport> *v, int& index, set<A
 /**
      * @brief Collects user input to find the best flight options between source and destination airports or cities.
      */
-void FlightManager::best_flight_option_input() {
+void FlightManager::best_flight_option_input(list<string>& src, list<string>& dest) {
     Menu menu;
     menu.print_ask_for_flight_option();
-    cout << "Choose the option you want to do: ";
-    list<string> src;
-    list<string> dest;
     char i;
     cin >> i;
     cout << "Choose the source!\n";
@@ -693,7 +690,6 @@ void FlightManager::best_flight_option_input() {
         cout <<"Invalid Input!\n";
         return;
     }
-    best_flight_option(src,dest);
 }
 
 
@@ -703,11 +699,14 @@ void FlightManager::best_flight_option_input() {
      * @param src List of source airports or cities.
      * @param dest List of destination airports or cities.
      */
-void FlightManager::best_flight_option(list<std::string> src, list<std::string> dest) {
+void FlightManager::best_flight_option() {
     vector<list<string>> res;
-    for (auto v : flights.getVertexSet())v->setVisited(false);
+    list<string> src;
+    list<string> dest;
+    best_flight_option_input(src,dest);
     for(auto vsrc :src){
         for(auto vdest:dest){
+            for (auto v : flights.getVertexSet())v->setVisited(false);
             auto airsrc = airports.find(Airport(vsrc));
             auto airdest = airports.find(Airport(vdest));
             auto vertexsrc = flights.findVertex(*airsrc);
@@ -763,6 +762,117 @@ void FlightManager::best_flight_option(list<std::string> src, list<std::string> 
                     cout << city <<"\n";
                 }
             }
+        }
+    }
+}
+void FlightManager::airlines_input() {
+    list<std::string> airline;
+    list<string> src;
+    list<string> dest;
+    best_flight_option_input(src,dest);
+    Menu menu;
+    menu.print_ask_for_airlines();
+    char i;
+    cin >> i;
+    if(i == '1'){
+        cout << "How many airlines do you wish to use: ";
+        int k ;
+        cin >> k;
+        for(auto v = 0;v<k;v++){
+            string airlinecode;
+            cin >> airlinecode;
+            bool found = false;
+            for(auto air : airlines){
+                if(air.getCode() == airlinecode){
+                    found = true;
+                }
+            }
+            if(found){
+                airline.push_back(airlinecode);
+            }
+            else{
+                cout << "There is no airline with code " << airlinecode << '\n';
+                return;
+            }
+        }
+        best_flight_option_filtred_airline(src,dest,airline);
+    }
+    else if(i == '2'){
+        best_flight_option_filtred_min(src,dest);
+    }
+    else if(i=='3')return;
+    else{
+        cout <<"Invalid Input!\n";
+        return;
+    }
+}
+void FlightManager::best_flight_option_filtred_airline(list<std::string> &src, list<std::string> &dest,list<std::string> airline) {
+
+}
+void FlightManager::best_flight_option_filtred_min(list<std::string> src, list<std::string> dest) {
+    vector<pair<list<string>,int>> res;
+    for(auto vsrc :src){
+        for(auto vdest:dest){
+            for (auto v : flights.getVertexSet())v->setVisited(false);
+            auto airsrc = airports.find(Airport(vsrc));
+            auto airdest = airports.find(Airport(vdest));
+            auto vertexsrc = flights.findVertex(*airsrc);
+            auto verterxdest = flights.findVertex(*airdest);
+            queue<pair<pair<Vertex<Airport>*,list<string>>,set<string>>> vertexpath;
+            list<string> path;
+            set<string> airline;
+            string destcity = verterxdest->getInfo().getName() + " , " + verterxdest->getInfo().getCity();
+            vertexpath.push({{vertexsrc,path},airline});
+            vertexsrc->setVisited(true);
+            while(!vertexpath.empty()){
+                auto vpath = vertexpath.front();
+                vertexpath.pop();
+                string city = vpath.first.first->getInfo().getName() + " , " + vpath.first.first->getInfo().getCity();
+                auto itr = std::find(vpath.first.second.begin(), vpath.first.second.end(),destcity);
+                if(itr == vpath.first.second.end()){
+                    vpath.first.second.push_back(city);
+                }
+                if(vpath.first.first == verterxdest)res.push_back({vpath.first.second,vpath.second.size()});
+                for(auto e : vpath.first.first->getAdj()){
+                    auto w = e.getDest();
+                    if(!w->isVisited()){
+                        set<string > temp = vpath.second;
+                        temp.insert(e.getWeight());
+                        vertexpath.push({{w,vpath.first.second},temp});
+                        w->setVisited(true);
+                    }
+                }
+            }
+        }
+    }
+    int min = 0;
+    bool first_time = true;
+    for(auto i : res){
+        if(first_time){
+            min = i.second;
+            first_time = false;
+        }
+        else if(i.second < min){
+            min = i.second;
+        }
+    }
+    for(auto i : res){
+        first_time = true;
+        if(i.second == min){
+            for(auto city : i.first){
+                if(first_time){
+                    cout << "PATH:\n";
+                    first_time = false;
+                    cout << city<<"\n";
+                }
+                else{
+                    cout << "     | \n";
+                    cout << "     | \n";
+                    cout << "     v \n";
+                    cout << city <<"\n";
+                }
+            }
+            cout << "NUMBER OF AIRLINES: "<< min << '\n';
         }
     }
 }

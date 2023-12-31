@@ -22,6 +22,7 @@ class Menu {
     void print_numberDestinationsMenu();
     void print_numberDestinationsXMenu();
     void print_ask_for_flight_option();
+    void print_ask_for_airlines();
 };
 
 

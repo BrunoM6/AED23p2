@@ -79,4 +79,15 @@ void Menu::print_ask_for_flight_option() {
     cout << "| 3- Coordinates                      |"<<'\n';
     cout << "| 4- Quit                             |"<<'\n';
     cout << "---------------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+
+}
+void Menu::print_ask_for_airlines() {
+    cout << "----------- Airlines ------------"<<'\n';
+    cout << "| 1- Airline Code               |"<<'\n';
+    cout << "| 2- Minimum number of airlines |"<<'\n';
+    cout << "| 3- Quit                       |"<<'\n';
+    cout << "---------------------------------"<<'\n';
+    cout << "Choose the option you want to do: ";
+
 }
